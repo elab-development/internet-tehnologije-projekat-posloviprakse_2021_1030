@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+  
     /**
      * Run the migrations.
      *
@@ -15,6 +16,14 @@ return new class extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('job_id');
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('job_id')->references('id')->on('jobs');
+            $table->string('status')->default('pending');
+            $table->text('cover_letter')->nullable();
+            $table->text('resume')->nullable();
             $table->timestamps();
         });
     }

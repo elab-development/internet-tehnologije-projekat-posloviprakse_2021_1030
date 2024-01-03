@@ -10,7 +10,7 @@ class Job extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'deadline', 'salary', 'location', 'requirements',
+        'title', 'description', 'deadline', 'salary', 'location', 'requirements','company_id'
     ];
     public function company()
     {
