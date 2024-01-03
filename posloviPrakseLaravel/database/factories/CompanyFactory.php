@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company,
+            'description' => $this->faker->paragraph,
+            'contact_info' => $this->faker->phoneNumber,
+            'website' => $this->faker->url,
+            'industry' => $this->faker->word,
+           
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,12 @@ class ApplicationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => random_int(1,User::count()),
+            'job_id' => random_int(1,Job::count()),
+            'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']),
+            'cover_letter' => $this->faker->paragraph,
+            'resume' => $this->faker->text,
+
         ];
     }
 }
