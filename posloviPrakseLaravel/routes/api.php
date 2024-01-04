@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
 use Illuminate\Http\Request;
@@ -18,14 +19,14 @@ use Illuminate\Support\Facades\Route;
 */
 
  
-// Route::get('/jobs',[JobController::class,'index']); 
-// Route::get('/jobs/{id}',[JobController::class,'show']);
+ Route::get('/jobs',[JobController::class,'index']); 
+  Route::get('/jobs/{id}',[JobController::class,'show']);
 
 Route::get('/company',[CompanyController::class,'index']); 
 Route::get('/company/{id}',[CompanyController::class,'show']);
 
-Route::get('/application',[ApplicationController::class,'index']); 
-Route::get('/application/{id}',[ApplicationController::class,'show']);
+Route::post('/register',[AuthController::class,'register']); 
+Route::post('/login',[AuthController::class,'login']); 
 
 
 
@@ -36,7 +37,15 @@ Route::get('/application/{id}',[ApplicationController::class,'show']);
 // Route::delete('/jobs/{id}',[JobController::class,'destroy']); 
 
 
+ 
 
-Route::resource('/jobs',JobController::class);
-Route::resource('/company',CompanyController::class);
-Route::resource('/application',ApplicationController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    }); 
+    Route::post('/logout',[AuthController::class,'logout']); 
+
+    Route::resource('/jobs',JobController::class)->except('index','show');
+    Route::resource('/company',CompanyController::class)->except('index','show');
+    Route::resource('/application',ApplicationController::class);
+});
