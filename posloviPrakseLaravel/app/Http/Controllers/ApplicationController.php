@@ -1,89 +1,83 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ApplicationResource;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return ApplicationResource::collection(Application::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'job_id' => 'required|exists:jobs,id',
+            'status' => 'required|string',
+            'cover_letter' => 'nullable|string',
+            'resume' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $application = Application::create($request->all());
+
+        return response()->json(['message' => 'Application created successfully', 'application' => new ApplicationResource($application)], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Application  $application
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $a = Application::find($id);
-       
-        return new ApplicationResource($a);
+        $application = Application::find($id);
+
+        if (!$application) {
+            return response()->json(['error' => 'Application not found'], 404);
+        }
+
+        return new ApplicationResource($application);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Application  $application
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Application $application)
+    public function update(Request $request, $id)
     {
-        //
+        $application = Application::find($id);
+
+        if (!$application) {
+            return response()->json(['error' => 'Application not found'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'job_id' => 'required|exists:jobs,id',
+            'status' => 'required|string',
+            'cover_letter' => 'nullable|string',
+            'resume' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $application->update($request->all());
+
+        return response()->json(['message' => 'Application updated successfully', 'application' => new ApplicationResource($application)]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Application  $application
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Application $application)
+    public function destroy($id)
     {
-        //
-    }
+        $application = Application::find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Application  $application
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Application $application)
-    {
-        //
+        if (!$application) {
+            return response()->json(['error' => 'Application not found'], 404);
+        }
+
+        $application->delete();
+
+        return response()->json(['message' => 'Application deleted successfully']);
     }
 }

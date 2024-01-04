@@ -39,3 +39,4 @@ Route::get('/application/{id}',[ApplicationController::class,'show']);
 
 Route::resource('/jobs',JobController::class);
 Route::resource('/company',CompanyController::class);
+Route::resource('/application',ApplicationController::class);
