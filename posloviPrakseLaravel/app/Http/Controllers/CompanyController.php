@@ -1,88 +1,85 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return CompanyResource::collection(Company::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'description' => 'required|string|max:250',
+            'contact_info' => 'required|string',
+            'website' => 'nullable|url',
+            'industry' => 'nullable|string',
+            'logo' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $company = Company::create($request->all());
+
+        return response()->json(['message' => 'Company created successfully', 'company' => new CompanyResource($company)], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $c = Company::find($id);
-       
-        return new CompanyResource($c);
+        $company = Company::find($id);
+
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+
+        return new CompanyResource($company);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        $company = Company::find($id);
+
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'description' => 'required|string|max:250',
+            'contact_info' => 'required|string',
+            'website' => 'nullable|url',
+            'industry' => 'nullable|string',
+            'logo' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $company->update($request->all());
+
+        return response()->json(['message' => 'Company updated successfully', 'company' => new CompanyResource($company)]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Company $company)
+    public function destroy($id)
     {
-        //
-    }
+        $company = Company::find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Company $company)
-    {
-        //
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+
+        $company->delete();
+
+        return response()->json(['message' => 'Company deleted successfully']);
     }
 }
