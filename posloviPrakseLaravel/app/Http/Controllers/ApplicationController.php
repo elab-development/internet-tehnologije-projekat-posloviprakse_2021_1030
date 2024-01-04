@@ -19,15 +19,30 @@ class ApplicationController extends Controller
             'user_id' => 'required|exists:users,id',
             'job_id' => 'required|exists:jobs,id',
             'status' => 'required|string',
-            'cover_letter' => 'nullable|string',
-            'resume' => 'nullable|string',
+            'cover_letter' => 'nullable|mimes:pdf,doc,docx|max:2048',
+            'resume' => 'nullable|mimes:pdf,doc,docx|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $application = Application::create($request->all());
+
+        $coverLetterPath = null;
+        $resumePath = null;
+
+        if ($request->file('cover_letter')) {
+            $coverLetterPath = $request->file('cover_letter')->store('cover_letters');
+        }
+        
+        if ($request->file('resume')) {
+            $resumePath = $request->file('resume')->store('resumes');
+        }
+        $data = $request->all();
+        $data['cover_letter'] = $coverLetterPath;
+        $data['resume'] = $resumePath;
+
+        $application = Application::create($data);
 
         return response()->json(['message' => 'Application created successfully', 'application' => new ApplicationResource($application)], 201);
     }
@@ -55,15 +70,29 @@ class ApplicationController extends Controller
             'user_id' => 'required|exists:users,id',
             'job_id' => 'required|exists:jobs,id',
             'status' => 'required|string',
-            'cover_letter' => 'nullable|string',
-            'resume' => 'nullable|string',
+            'cover_letter' => 'nullable|mimes:pdf,doc,docx|max:2048',
+            'resume' => 'nullable|mimes:pdf,doc,docx|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
+        $coverLetterPath = $application->cover_letter;
+        $resumePath = $application->resume;
 
-        $application->update($request->all());
+        if ($request->file('cover_letter')) {
+            $coverLetterPath = $request->file('cover_letter')->store('cover_letters');
+        }
+        
+        if ($request->file('resume')) {
+            $resumePath = $request->file('resume')->store('resumes');
+        }
+        $data = $request->all();
+        $data['cover_letter'] = $coverLetterPath;
+        $data['resume'] = $resumePath;
+
+     
+        $application->update($data);
 
         return response()->json(['message' => 'Application updated successfully', 'application' => new ApplicationResource($application)]);
     }

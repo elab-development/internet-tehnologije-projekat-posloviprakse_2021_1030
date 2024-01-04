@@ -28,7 +28,7 @@ Route::get('/company/{id}',[CompanyController::class,'show']);
 Route::post('/register',[AuthController::class,'register']); 
 Route::post('/login',[AuthController::class,'login']); 
  
-
+Route::resource('/application',ApplicationController::class);
 // Route::post('/jobs',[JobController::class,'store']); 
 // Route::put('/jobs/{id}',[JobController::class,'update']); 
 // Route::delete('/jobs/{id}',[JobController::class,'destroy']); 
@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/jobs',JobController::class)->except('index','show');
     });
     Route::middleware('checkrole:student')->group(function () {
-        Route::resource('/application',ApplicationController::class);
+      
     });
   
     
