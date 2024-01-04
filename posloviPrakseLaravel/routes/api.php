@@ -19,33 +19,36 @@ use Illuminate\Support\Facades\Route;
 */
 
  
- Route::get('/jobs',[JobController::class,'index']); 
-  Route::get('/jobs/{id}',[JobController::class,'show']);
+Route::get('/jobs',[JobController::class,'index']); 
+Route::get('/jobs/{id}',[JobController::class,'show']);
 
 Route::get('/company',[CompanyController::class,'index']); 
 Route::get('/company/{id}',[CompanyController::class,'show']);
 
 Route::post('/register',[AuthController::class,'register']); 
 Route::post('/login',[AuthController::class,'login']); 
-
-
-
-
+ 
 
 // Route::post('/jobs',[JobController::class,'store']); 
 // Route::put('/jobs/{id}',[JobController::class,'update']); 
 // Route::delete('/jobs/{id}',[JobController::class,'destroy']); 
-
-
  
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     }); 
     Route::post('/logout',[AuthController::class,'logout']); 
+    Route::middleware('checkrole:admin')->group(function () {
+        Route::resource('/company',CompanyController::class)->except('index','show');
+    });
 
-    Route::resource('/jobs',JobController::class)->except('index','show');
-    Route::resource('/company',CompanyController::class)->except('index','show');
-    Route::resource('/application',ApplicationController::class);
+    Route::middleware('checkrole:firma')->group(function () {
+        Route::resource('/jobs',JobController::class)->except('index','show');
+    });
+    Route::middleware('checkrole:student')->group(function () {
+        Route::resource('/application',ApplicationController::class);
+    });
+  
+    
 });
+
