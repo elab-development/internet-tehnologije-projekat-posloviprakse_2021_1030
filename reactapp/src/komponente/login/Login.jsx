@@ -13,7 +13,8 @@ const Login = () => {
       });
 
       console.log(response.data);
-   
+      sessionStorage.setItem("token",response.data.token)
+      sessionStorage.setItem("user",response.data.user)
     } catch (error) {
       console.error('Login failed:', error.response.data.error);
     }
