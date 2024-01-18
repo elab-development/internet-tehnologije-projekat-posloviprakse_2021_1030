@@ -1,0 +1,22 @@
+.job-card {
+    background-color: #C4E0F9;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .job-card h3 {
+    color: #b95f89;
+  }
+  
+  .job-card p {
+    margin: 5px 0;
+  }
+  
+  .job-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
