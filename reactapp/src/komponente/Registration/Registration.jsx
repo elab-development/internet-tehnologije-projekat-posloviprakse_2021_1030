@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Registration.css';  
+import InputField from './InputField';
 
 const Registration = () => {
   const [name, setName] = useState('');
@@ -20,6 +21,7 @@ const Registration = () => {
       console.log(response.data);
     
     } catch (error) {
+        alert( error.response.data.error)
       console.error('Registration failed:', error.response.data.errors);
     }
   };
@@ -27,30 +29,10 @@ const Registration = () => {
   return (
     <div className="login-container">
       <h2>Registration</h2>
-      <div className="input-group">
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+      <InputField label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <InputField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <InputField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
       <div className="input-group">
         <label>Role:</label>
         <select value={role} onChange={(e) => setRole(e.target.value)}>

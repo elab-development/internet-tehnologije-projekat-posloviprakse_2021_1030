@@ -16,7 +16,8 @@ const Login = () => {
       sessionStorage.setItem("token",response.data.token)
       sessionStorage.setItem("user",response.data.user)
     } catch (error) {
-      console.error('Login failed:', error.response.data.error);
+        alert( error.response.data.error)
+     // console.error('Login failed:', error.response.data.error);
     }
   };
 
