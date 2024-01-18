@@ -21,8 +21,11 @@ const Registration = () => {
       console.log(response.data);
     
     } catch (error) {
-        alert( error.response.data.error)
-      console.error('Registration failed:', error.response.data.errors);
+        const errors = error.response.data.errors;
+        const errorMessages = Object.values(errors).flat(); // Spajamo sve poruke grešaka u jedan niz
+
+        alert(`Registration failed:\n${errorMessages.join('\n')}`);
+        console.error('Registration failed:', errors);
     }
   };
 

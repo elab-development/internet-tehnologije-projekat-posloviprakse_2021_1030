@@ -16,8 +16,8 @@ const Login = () => {
       sessionStorage.setItem("token",response.data.token)
       sessionStorage.setItem("user",response.data.user)
     } catch (error) {
-        alert( error.response.data.error)
-     // console.error('Login failed:', error.response.data.error);
+        
+         console.error('Login failed:', error.response.data.error);
     }
   };
 
@@ -30,6 +30,7 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
       <div className="input-group">
@@ -38,6 +39,7 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </div>
       <button onClick={handleLogin}>Login</button>
