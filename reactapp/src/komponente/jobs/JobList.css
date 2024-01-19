@@ -1,67 +1,77 @@
 .job-list {
+  padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; /* Distributes space around items */
-  gap: 20px; /* Space between cards */
+  gap: 20px;
 }
 
+.job-list.list .job-card {
+  flex: 1 1 100%;
+}
+
+.job-list.grid .job-card {
+  flex: 1 1 calc(33.333% - 20px); /* 3 cards per row minus gap */
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+  .job-list.grid .job-card {
+    flex: 1 1 calc(50% - 20px); /* 2 cards per row minus gap */
+  }
+}
+
+@media (max-width: 480px) {
+  .job-list.grid .job-card {
+    flex: 1 1 100%; /* 1 card per row */
+  }
+}
+
+/* Job card styles */
 .job-card {
   background-color: #C4E0F9;
-  padding: 20px;
-  margin-bottom: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex: 0 1 calc(33% - 40px); /* Flex grow, flex shrink, flex basis */
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column; /* Stack the content vertically */
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.job-card h3 {
-  color: #b95f89;
-  margin-bottom: 10px;
-}
-
-.job-card p {
-  margin: 5px 0;
-  line-height: 1.4;
-}
-
+/* Filter form styles */
 .filter-form {
-  margin: 20px auto;
-  text-align: center;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  width: 100%;
+  padding: 20px;
 }
 
-.filter-form input[type="text"],
-.filter-form input[type="number"] {
+.filter-form input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #C4E0F9;
-  flex: 1 1 calc(50% - 20px); /* Flexible inputs */
-  min-width: 120px;
-  max-width: 100%;
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 767px) {
-  .job-card {
-    flex: 0 1 calc(50% - 40px); /* Adjust to have 2 cards per row on smaller screens */
-  }
-
-  .filter-form input[type="text"],
-  .filter-form input[type="number"] {
-    flex: 1 1 100%; /* Full width inputs on smaller screens */
-  }
+/* Sort button styles */
+.sort-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
 }
 
-/* Responsive adjustments for very small screens */
-@media (max-width: 480px) {
-  .job-card {
-    flex: 0 1 100%; /* Full width for very small screens */
-  }
+.sort-buttons button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Ensuring buttons have consistent style */
+button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #357abd;
 }

@@ -9,6 +9,7 @@ const JobList = () => {
   const [salaryRange, setSalaryRange] = useState({ min: '', max: '' });
   const [sortKey, setSortKey] = useState('title');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [view, setView] = useState('list'); // 'grid' for grid view
 
   const handleFilterChange = (e) => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
@@ -24,37 +25,40 @@ const JobList = () => {
     return job.salary >= minSalary && job.salary <= maxSalary;
   };
 
-  const filteredJobs = jobs.filter(job => {
-    return Object.entries(filter).every(([key, value]) =>
-      !value || job[key]?.toString().toLowerCase().includes(value.toLowerCase())
-    ) && salaryFilter(job);
-  });
   const handleSortChange = (key) => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     setSortKey(key);
   };
 
-  const sortedJobs = [...filteredJobs].sort((a, b) => {
-    if (a[sortKey] < b[sortKey]) return sortOrder === 'asc' ? -1 : 1;
-    if (a[sortKey] > b[sortKey]) return sortOrder === 'asc' ? 1 : -1;
-    return 0;
-  });
+  const sortedJobs = [...jobs]
+    .filter(job => Object.entries(filter).every(([key, value]) =>
+      !value || job[key]?.toString().toLowerCase().includes(value.toLowerCase())
+    ) && salaryFilter(job))
+    .sort((a, b) => {
+      if (a[sortKey] < b[sortKey]) return sortOrder === 'asc' ? -1 : 1;
+      if (a[sortKey] > b[sortKey]) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+  const toggleView = () => {
+    setView(view === 'list' ? 'grid' : 'list');
+  };
+
   return (
     <div>
       <div className="filter-form">
         <input type="text" name="title" placeholder="Title" onChange={handleFilterChange} />
         <input type="text" name="location" placeholder="Location" onChange={handleFilterChange} />
-      
         <input type="number" name="min" placeholder="Min Salary" onChange={handleSalaryChange} />
         <input type="number" name="max" placeholder="Max Salary" onChange={handleSalaryChange} />
-       
       </div>
       <div className="sort-buttons">
         <button onClick={() => handleSortChange('title')}>Sort by Title</button>
         <button onClick={() => handleSortChange('salary')}>Sort by Salary</button>
         <button onClick={() => handleSortChange('date')}>Sort by Date</button>
+        <button onClick={toggleView}>Toggle View</button>
       </div>
-      <div className="job-list">
+      <div className={`job-list ${view}`}>
         {sortedJobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
