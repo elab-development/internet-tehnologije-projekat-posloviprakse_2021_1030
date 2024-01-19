@@ -49,21 +49,7 @@ const JoobleListings = () => {
     setCurrentPage(pageNumber);
   };
 
-  const createPagination = () => {
-    let pages = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button 
-          key={i} 
-          onClick={() => goToPage(i)}
-          className={currentPage === i ? 'active' : ''}
-        >
-          {i}
-        </button>
-      );
-    }
-    return pages;
-  };
+ 
 
   if (loading) {
     return <div>Loading...</div>;

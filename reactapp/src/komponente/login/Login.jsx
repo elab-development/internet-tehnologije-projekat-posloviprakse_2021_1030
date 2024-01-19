@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css'
-const Login = () => {
+import { useNavigate } from 'react-router-dom';
+const Login = ({setToken}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', {
@@ -13,8 +14,10 @@ const Login = () => {
       });
 
       console.log(response.data);
+      setToken(response.data.token)
       sessionStorage.setItem("token",response.data.token)
       sessionStorage.setItem("user",response.data.user)
+      navigate('/jobs')
     } catch (error) {
         
          console.error('Login failed:', error.response.data.error);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './komponente/login/Login';
@@ -8,15 +8,16 @@ import Navbar from './komponente/Navbar/Navbar';
 import JoobleListings from './komponente/joobleAPI/JoobleListings';
 
 function App() {
+  const [token,setToken]= useState(null);
   return (
     <Router>
       <div className="App">
-        <Navbar></Navbar>
+        <Navbar token={token}  setToken={setToken}  ></Navbar>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login setToken={setToken}/>} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/jobs" element={<JobList />} />
-          {/* <Route path="/jooble" element={<JoobleListings />} />  */}
+          <Route path="/jooble" element={<JoobleListings />} /> 
           {/* pod komentarom zbog ogranicenog broja upita */}
         </Routes>
       </div>
