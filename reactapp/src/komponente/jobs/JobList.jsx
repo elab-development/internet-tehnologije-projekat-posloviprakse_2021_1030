@@ -7,6 +7,8 @@ const JobList = () => {
   const { jobs } = useJobs('http://127.0.0.1:8000/api/jobs');
   const [filter, setFilter] = useState({});
   const [salaryRange, setSalaryRange] = useState({ min: '', max: '' });
+  const [sortKey, setSortKey] = useState('title');
+  const [sortOrder, setSortOrder] = useState('asc');
 
   const handleFilterChange = (e) => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
@@ -27,7 +29,16 @@ const JobList = () => {
       !value || job[key]?.toString().toLowerCase().includes(value.toLowerCase())
     ) && salaryFilter(job);
   });
+  const handleSortChange = (key) => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    setSortKey(key);
+  };
 
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    if (a[sortKey] < b[sortKey]) return sortOrder === 'asc' ? -1 : 1;
+    if (a[sortKey] > b[sortKey]) return sortOrder === 'asc' ? 1 : -1;
+    return 0;
+  });
   return (
     <div>
       <div className="filter-form">
@@ -36,10 +47,15 @@ const JobList = () => {
       
         <input type="number" name="min" placeholder="Min Salary" onChange={handleSalaryChange} />
         <input type="number" name="max" placeholder="Max Salary" onChange={handleSalaryChange} />
-      
+       
+      </div>
+      <div className="sort-buttons">
+        <button onClick={() => handleSortChange('title')}>Sort by Title</button>
+        <button onClick={() => handleSortChange('salary')}>Sort by Salary</button>
+        <button onClick={() => handleSortChange('date')}>Sort by Date</button>
       </div>
       <div className="job-list">
-        {filteredJobs.map((job) => (
+        {sortedJobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>
