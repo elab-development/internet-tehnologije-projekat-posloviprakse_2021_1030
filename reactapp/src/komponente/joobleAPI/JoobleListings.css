@@ -57,3 +57,28 @@
     color: #333;
   }
   
+
+  .jooble-listings .pagination {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .jooble-listings .pagination button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .jooble-listings .pagination button:hover {
+    background-color: #357abd;
+  }
+  
+  .jooble-listings .pagination .active {
+    background-color: #357abd;
+  }
+  

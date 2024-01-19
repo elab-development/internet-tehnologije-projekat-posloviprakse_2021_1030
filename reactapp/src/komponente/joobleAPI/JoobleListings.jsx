@@ -1,43 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './JoobleListings.css';
+
 const JoobleListings = () => {
   const [jobPostings, setJobPostings] = useState([]);
+  const [displayedJobs, setDisplayedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    const url = "https://jooble.org/api/";
-    const key = "22a77a17-c8b0-44ce-b553-006853f5077e"; // Replace with your actual API key
-    const params = {
-      keywords: 'it',
-    
+    const fetchData = async () => {
+      try {
+        const url = "https://jooble.org/api/";
+        const key = "22a77a17-c8b0-44ce-b553-006853f5077e";  
+        const params = {
+          keywords: 'it',
+          limit: 20,  
+        };
+
+        const response = await axios.post(url + key, params, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        setJobPostings(response.data.jobs);
+        setTotalPages(Math.ceil(20 / itemsPerPage));
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    axios.post(url + key, params, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      setJobPostings(response.data.jobs);
-      setLoading(false);
-    })
-    .catch(error => {
-      console.error("Error fetching data: ", error);
-      setLoading(false);
-    });
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    // Update displayed jobs when currentPage changes
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setDisplayedJobs(jobPostings.slice(startIndex, endIndex));
+  }, [currentPage, jobPostings]);
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const createPagination = () => {
+    let pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button 
+          key={i} 
+          onClick={() => goToPage(i)}
+          className={currentPage === i ? 'active' : ''}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pages;
+  };
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  console.log(totalPages)
   return (
     <div className="jooble-listings">
       <h2>Job Listings</h2>
       <ul>
-        {jobPostings.map((job, index) => (
-          <li key={index}>
+        {displayedJobs.map((job, index) => (
+          <li key={job.id || index}> 
             <h3>{job.title}</h3>
             <p><strong>Company:</strong> {job.company}</p>
             <p><strong>Description:</strong> <span dangerouslySetInnerHTML={{ __html: job.snippet }}></span></p>
@@ -49,10 +86,21 @@ const JoobleListings = () => {
           </li>
         ))}
       </ul>
+      <div className="pagination">
+      {
+        Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+          <button 
+            key={page} 
+            onClick={() => goToPage(page)}
+            className={currentPage === page ? 'active' : ''}
+          >
+            {page}
+          </button>
+        ))
+      }
+    </div>
     </div>
   );
-  
- 
 };
 
 export default JoobleListings;
