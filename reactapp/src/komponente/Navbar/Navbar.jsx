@@ -26,6 +26,7 @@ const Navbar = () => {
         <Link to="/login" className="nav-link">Login</Link>
         <Link to="/registration" className="nav-link">Registration</Link>
         <Link to="/jobs" className="nav-link">Jobs</Link>
+        <Link to="/jooble" className="nav-link">Jooble</Link>
         <button onClick={handleLogout} className="nav-link">Logout</button>
       </nav>
     );

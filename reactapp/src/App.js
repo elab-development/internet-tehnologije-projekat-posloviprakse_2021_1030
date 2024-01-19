@@ -16,7 +16,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/jobs" element={<JobList />} />
-          <Route path="/jooble" element={<JoobleListings />} />
+          {/* <Route path="/jooble" element={<JoobleListings />} />  */}
+          {/* pod komentarom zbog ogranicenog broja upita */}
         </Routes>
       </div>
     </Router>

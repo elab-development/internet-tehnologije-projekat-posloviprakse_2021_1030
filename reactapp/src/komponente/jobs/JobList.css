@@ -1,35 +1,67 @@
+.job-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Distributes space around items */
+  gap: 20px; /* Space between cards */
+}
+
 .job-card {
   background-color: #C4E0F9;
   padding: 20px;
-  margin: 10px;
+  margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 0 1 calc(33% - 40px); /* Flex grow, flex shrink, flex basis */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Stack the content vertically */
 }
 
 .job-card h3 {
   color: #b95f89;
+  margin-bottom: 10px;
 }
 
 .job-card p {
   margin: 5px 0;
-}
-
-.job-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  line-height: 1.4;
 }
 
 .filter-form {
-  margin: 20px;
+  margin: 20px auto;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
 }
 
-.filter-form input[type="text"], .filter-form input[type="number"] {
-  margin: 0 10px;
+.filter-form input[type="text"],
+.filter-form input[type="number"] {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #C4E0F9;
+  flex: 1 1 calc(50% - 20px); /* Flexible inputs */
+  min-width: 120px;
+  max-width: 100%;
 }
 
- 
+/* Responsive adjustments for smaller screens */
+@media (max-width: 767px) {
+  .job-card {
+    flex: 0 1 calc(50% - 40px); /* Adjust to have 2 cards per row on smaller screens */
+  }
+
+  .filter-form input[type="text"],
+  .filter-form input[type="number"] {
+    flex: 1 1 100%; /* Full width inputs on smaller screens */
+  }
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-width: 480px) {
+  .job-card {
+    flex: 0 1 100%; /* Full width for very small screens */
+  }
+}
