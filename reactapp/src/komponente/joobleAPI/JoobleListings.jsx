@@ -1,60 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 import './JoobleListings.css';
 
+const fetchJobPostings = async () => {
+  const url = "https://jooble.org/api/";
+  const key = "22a77a17-c8b0-44ce-b553-006853f5077e";  
+  const params = {
+    keywords: 'it',
+    limit: 20,
+  };
+
+  const response = await axios.post(url + key, params, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  return response.data.jobs;
+};
+
 const JoobleListings = () => {
-  const [jobPostings, setJobPostings] = useState([]);
-  const [displayedJobs, setDisplayedJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const url = "https://jooble.org/api/";
-        const key = "22a77a17-c8b0-44ce-b553-006853f5077e";  
-        const params = {
-          keywords: 'it',
-          limit: 20,  
-        };
+  const { data: jobPostings, isLoading, isError, error } = useQuery('jobs', fetchJobPostings, {
+    keepPreviousData: true, // This option keeps the previous data until the new data is fetched
+  });
 
-        const response = await axios.post(url + key, params, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
+  const totalPages = jobPostings ? Math.ceil(jobPostings.length / itemsPerPage) : 0;
 
-        setJobPostings(response.data.jobs);
-        setTotalPages(Math.ceil(20 / itemsPerPage));
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    // Update displayed jobs when currentPage changes
+  const displayedJobs = React.useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    setDisplayedJobs(jobPostings.slice(startIndex, endIndex));
+    return jobPostings?.slice(startIndex, endIndex);
   }, [currentPage, jobPostings]);
 
   const goToPage = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
- 
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(totalPages)
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <div className="jooble-listings">
       <h2>Job Listings</h2>
