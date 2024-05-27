@@ -29,12 +29,13 @@ Route::get('/company/{id}',[CompanyController::class,'show']);
 Route::post('/register',[AuthController::class,'register']); 
 Route::post('/login',[AuthController::class,'login']); 
  
-Route::resource('/application',ApplicationController::class); 
+
 Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->group(function () {
     
     Route::post('/logout',[AuthController::class,'logout']); 
     Route::middleware('checkrole:admin')->group(function () {
+        Route::resource('/application',ApplicationController::class)->only('index'); 
         Route::resource('/company',CompanyController::class)->except('index','show');
         Route::get('admin/statistics', [AdminController::class, 'getStatistics']);
         Route::get('admin/company-statistics/{id}', [AdminController::class, 'getCompanyStatistics']);
@@ -47,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
     Route::middleware('checkrole:student')->group(function () {
-      
+        Route::resource('/application',ApplicationController::class)->except('index'); 
     });
   
     
