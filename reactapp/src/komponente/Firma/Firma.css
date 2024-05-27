@@ -1,0 +1,55 @@
+.firma-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .firma-details {
+    background-color: #C4E0F9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .firma-details h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+  
+  .firma-details p {
+    margin: 5px 0;
+  }
+  
+  .firma-details a {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .firma-details a:hover {
+    color: #357abd;
+  }
+  
+  .firma-details ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .firma-details li {
+    background-color: #e9f3fd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .firma-details li h4 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+  }
+  
+  .firma-details li p {
+    margin: 5px 0;
+  }
+  

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Company;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -22,6 +23,8 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'date_of_birth' => $this->date_of_birth, 
+            'company' => $this->company_id ? new CompanyResource(Company::find($this->company_id)) : null,
+
         ];
     }
 }

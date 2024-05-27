@@ -19,7 +19,10 @@ class JobController extends Controller
     {
         return JobResource::collection(Job::all());
     }
-
+    public function SviPosloviJedneFirme()
+    {
+        return JobResource::collection(Job::all());
+    }
     /**
      * Show the form for creating a new resource.
      *

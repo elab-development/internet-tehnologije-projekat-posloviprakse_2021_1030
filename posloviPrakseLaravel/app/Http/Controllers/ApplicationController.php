@@ -109,4 +109,19 @@ class ApplicationController extends Controller
 
         return response()->json(['message' => 'Application deleted successfully']);
     }
+
+
+
+    public function getByJobId($job_id) //metoda dodata za seminnarski rad, vraca na osnovu job_id sve prijave za taj posao kako bismo mogli da ih prikazemo firmamam
+    {
+        $applications = Application::where('job_id', $job_id)->get();
+
+        if ($applications->isEmpty()) {
+            return response()->json(['message' => 'No applications found for this job'], 404);
+        }
+
+        return ApplicationResource::collection($applications);
+    }
+
+
 }

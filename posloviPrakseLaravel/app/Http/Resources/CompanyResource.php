@@ -21,7 +21,7 @@ class CompanyResource extends JsonResource
             'contact_info' => $this->contact_info,
             'website' => $this->website,
             'industry' => $this->industry,
-           
+            'jobs' => JobResource::collection($this->jobs),
         ];
     }
 }
