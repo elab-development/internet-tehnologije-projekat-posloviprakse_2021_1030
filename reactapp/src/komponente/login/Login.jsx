@@ -3,8 +3,8 @@ import axios from 'axios';
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 const Login = ({setToken}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('connelly.nola@example.org');
+  const [password, setPassword] = useState('1234');
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
@@ -16,8 +16,17 @@ const Login = ({setToken}) => {
       console.log(response.data);
       setToken(response.data.token)
       sessionStorage.setItem("token",response.data.token)
-      sessionStorage.setItem("user",response.data.user)
-      navigate('/jobs')
+      sessionStorage.setItem("user",JSON.stringify(response.data.user))
+      if(response.data.user.role=="firma"){
+        navigate('/firma')
+      }else  if(response.data.user.role=="admin"){
+        navigate('/admin')
+
+      }else{
+        navigate('/jobs')
+
+      }
+      
     } catch (error) {
         
          console.error('Login failed:', error.response.data.error);

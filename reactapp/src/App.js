@@ -8,6 +8,7 @@ import Navbar from './komponente/Navbar/Navbar';
 import JoobleListings from './komponente/joobleAPI/JoobleListings';
 import Firma from './komponente/Firma/Firma';
 import JobApplications from './komponente/Firma/JobApplications';
+import Admin from './komponente/Admin/Admin';
 
 function App() {
   const [token,setToken]= useState(null);
@@ -26,6 +27,7 @@ function App() {
           {/* za seminarski */}
           <Route path="/firma/job/:id" element={<JobApplications />} />
           <Route path="/firma" element={<Firma />} />  
+          <Route path="/admin" element={<Admin />} />  
 
          
         </Routes>

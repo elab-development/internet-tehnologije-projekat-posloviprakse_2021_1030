@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
@@ -35,6 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout',[AuthController::class,'logout']); 
     Route::middleware('checkrole:admin')->group(function () {
         Route::resource('/company',CompanyController::class)->except('index','show');
+        Route::get('admin/statistics', [AdminController::class, 'getStatistics']);
+        Route::get('admin/company-statistics/{id}', [AdminController::class, 'getCompanyStatistics']);
+        Route::get('admin/all-company-statistics', [AdminController::class, 'getAllCompanyStatistics']);
     });
 
     Route::middleware('checkrole:firma')->group(function () {

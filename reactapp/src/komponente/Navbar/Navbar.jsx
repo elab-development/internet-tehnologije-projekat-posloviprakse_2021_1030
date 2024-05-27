@@ -15,7 +15,7 @@ const Navbar = ({token,setToken}) => {
         });
         sessionStorage.clear();
         setToken(null)
-        navigate('/login');
+        navigate('/');
       } catch (error) {
         console.error('Logout failed:', error);
       
