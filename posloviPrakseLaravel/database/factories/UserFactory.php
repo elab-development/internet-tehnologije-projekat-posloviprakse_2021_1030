@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,18 +19,24 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $role = $this->faker->randomElement(['admin', 'student', 'firma']);
+        $company_id = null;
+
+        if ($role === 'firma') {
+            $company_id = Company::inRandomOrder()->first()->id;
+        }
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' =>  Hash::make('1234'),
+            'password' => Hash::make('1234'),
             'remember_token' => Str::random(10),
-            'role' => 'student',
+            'role' => $role,
             'phone_number' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'date_of_birth' => $this->faker->date,
-
-
+            'company_id' => $company_id,
         ];
     }
 

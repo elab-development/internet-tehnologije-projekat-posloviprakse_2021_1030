@@ -46,7 +46,6 @@ const JobApplications = () => {
             <th>User </th>
             <th>Status</th>
             <th>Cover Letter</th>
-            <th>Resume</th>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +54,6 @@ const JobApplications = () => {
               <td>{application.id}</td>
               <td>{application.user.name}</td>
               <td>{application.status}</td>
-              <td>{application.cover_letter ? <a href={`http://127.0.0.1:8000/storage/${application.cover_letter}`} target="_blank" rel="noopener noreferrer">View</a> : 'N/A'}</td>
               <td>{application.resume ? <a href={`http://127.0.0.1:8000/storage/${application.resume}`} target="_blank" rel="noopener noreferrer">View</a> : 'N/A'}</td>
             </tr>
           ))}

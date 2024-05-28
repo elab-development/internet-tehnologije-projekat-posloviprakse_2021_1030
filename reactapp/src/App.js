@@ -24,7 +24,7 @@ function App() {
           {/* pod komentarom zbog ogranicenog broja upita */}
 
 
-          {/* za seminarski */}
+ 
           <Route path="/firma/job/:id" element={<JobApplications />} />
           <Route path="/firma" element={<Firma />} />  
           <Route path="/admin" element={<Admin />} />  
